@@ -4,11 +4,13 @@
 # likes. Suitable for calling from a Folder Action in order to automatically
 # encode and add new downloaded movies.
 
-log() { 
+log() {
+    logger -t "process-download.sh/log" "$@"
     echo "$@" | growlnotify -s "process-download"
 }
 
 notice() {
+    logger -t "process-download.sh/notice" "$@"
     echo "$@" | growlnotify "process-download"
 }
 
