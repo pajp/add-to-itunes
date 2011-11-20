@@ -15,7 +15,7 @@ notice() {
 }
 
 needs_encoding() {
-    expr "$1" : ".*.mkv$" > /dev/null
+    expr "$1" : ".*.mkv$" > /dev/null || expr "$1" : ".*.avi$" > /dev/null
 }
 
 add_to_itunes_and_delete() {
