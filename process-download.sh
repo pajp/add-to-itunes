@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# A script for re-encoding mkv files into something that iTunes and Apple TV
+# likes. Suitable for calling from a Folder Action in order to automatically
+# encode and add new downloaded movies.
+
 log() { 
     echo "$@" | growlnotify -s "process-download"
 }
