@@ -40,11 +40,24 @@ EOF
     fi
 }
 
+label_file_encoded() {
+    mediafile="$1"
+cat <<EOF | osascript
+set f to POSIX file "$mediafile"
+tell application "Finder"
+    reveal f
+    set s to selection
+    set label index of first item of s to 6
+end tell
+EOF
+}
+
 encode_file() {
     infile="$1"
     encodedfile=""
     outfile=`echo "$infile" | sed -e 's/\.[0-9a-z]*$/.m4v/'`
     if [ -f "$outfile" ] ; then
+	label_file_encoded "$f"
 	log "Output file $outfile already exists - aborting"
 	return 1
     fi
@@ -62,6 +75,7 @@ for f in "$@"; do
 	encode_file "$f"
 	if [ "$encodedfile" ] ; then
 	    notice "Encoding successful"
+	    label_file_encoded "$f"
 	    add_to_itunes_and_delete "$encodedfile"
 	else
 	    log "Encoding failed for $f"
