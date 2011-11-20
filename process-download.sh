@@ -42,7 +42,7 @@ encode_file() {
     infile="$1"
     encodedfile=""
     outfile=`echo "$infile" | sed -e 's/\.[0-9a-z]*$/.m4v/'`
-    log "Encoding $infile to $outfile"
+    notice "Encoding $infile to $outfile"
     # if HandBrakeCLI success, set $encodedfile to the resulting file
     HandBrakeCLI -i "$infile" -o "$outfile" --preset="Apple TV 2" && encodedfile="$outfile"
 }
