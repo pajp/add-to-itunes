@@ -4,6 +4,13 @@
 # likes. Suitable for calling from a Folder Action in order to automatically
 # encode and add new downloaded movies.
 
+# todo:
+# * encode into temporary directory to avoid cluttering Downloads folder
+# * do label_file_encoded without revealing the file in Finder (can interfere
+#   if you're working with Finder at the moment)
+# * check if the file already exists in iTunes library before adding it
+# ** if m4v version already exists, add it to iTunes anyway
+
 log() {
     logger -t "process-download.sh/log" "$@"
     echo "$@" | growlnotify -s "process-download"
