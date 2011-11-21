@@ -5,7 +5,7 @@
 # encode and add new downloaded movies.
 # Requires HandBrakeCLI:
 #  http://handbrake.fr/downloads2.php
-# Requires growlnotify:
+# Requires growlnotify (probably works without it):
 #  http://growl.info/extras.php
 
 # To make this script run automatically when a new file is downloaded,
