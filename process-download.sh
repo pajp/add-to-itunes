@@ -78,8 +78,6 @@ encode_file() {
 }
 
 
-notice "New file: $@" 
-
 for f; do
     if needs_encoding "$f" ; then
 	notice "$f was downloaded and needs encoding"
