@@ -13,7 +13,6 @@
 # * do label_file_encoded without revealing the file in Finder (can interfere
 #   if you're working with Finder at the moment)
 # * check if the file already exists in iTunes library before adding it
-# ** if m4v version already exists, add it to iTunes anyway
 
 log() {
     logger -t "process-download.sh/log" "$@"
@@ -69,8 +68,9 @@ encode_file() {
     outfile=`echo "$infile" | sed -e 's/\.[0-9a-z]*$/.m4v/'`
     if [ -f "$outfile" ] ; then
 	label_file_encoded "$f"
-	log "Output file $outfile already exists - aborting"
-	return 1
+	log "Output file $outfile already exists - not re-encoding"
+	encodedfile="$outfile"
+	return 0
     fi
     notice "Encoding $infile to $outfile"
     # if HandBrakeCLI success, set $encodedfile to the resulting file
