@@ -8,6 +8,14 @@
 # Requires growlnotify:
 #  http://growl.info/extras.php
 
+# To make this script run automatically when a new file is downloaded,
+# start Automator, select Folder Action, drag a "Run Shell Script" action
+# to the flow. Set the contents of the Shell Script to the path of this
+# file plus "$@" for all arguments, for example:
+#     /Users/rasmus/bin/process-download.sh "$@"
+# Change the "Pass input" dropdown to "as arguments" if it isn't set already.
+# The Folder Action activates when saved.
+
 # todo:
 # * encode into temporary directory to avoid cluttering Downloads folder
 # * do label_file_encoded without revealing the file in Finder (can interfere
