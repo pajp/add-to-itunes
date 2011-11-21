@@ -74,7 +74,7 @@ encode_file() {
     fi
     notice "Encoding $infile to $outfile"
     # if HandBrakeCLI success, set $encodedfile to the resulting file
-    HandBrakeCLI -i "$infile" -o "$outfile" --preset="Apple TV 2" && encodedfile="$outfile"
+    HandBrakeCLI -i "$infile" -o "$outfile" -f mp4 --preset="Normal" && encodedfile="$outfile"
 }
 
 
