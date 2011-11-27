@@ -33,7 +33,8 @@ notice() {
 }
 
 needs_encoding() {
-    expr "$1" : ".*.mkv$" > /dev/null || expr "$1" : ".*.avi$" > /dev/null
+    filexa=`xattr -p nu.dll.pd.added-to-itunes "$f"`
+    expr "$1" : ".*.mkv$" > /dev/null || expr "$1" : ".*.avi$" > /dev/null && [ "$filexa" != "true" ] 
 }
 
 add_to_itunes_and_delete() {
@@ -93,7 +94,8 @@ for f; do
 	if [ "$encodedfile" ] ; then
 	    notice "Encoding successful"
 	    label_file_encoded "$f"
-	    add_to_itunes_and_delete "$encodedfile"
+	    add_to_itunes_and_delete "$encodedfile" && \
+		xattr -w nu.dll.pd.added-to-itunes true "$f"
 	else
 	    log "Encoding failed for $f"
 	fi 
