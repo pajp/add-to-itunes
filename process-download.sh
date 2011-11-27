@@ -56,11 +56,13 @@ EOF
 	log "$mediafile added to iTunes and deleted"
     else
 	log "Failed to add $mediafile to iTunes"
+	return $rc
     fi
 }
 
 label_file_encoded() {
     mediafile="$1"
+    xattr -w nu.dll.pd.is-encoded true "$mediafile"
 cat <<EOF | osascript
 set f to POSIX file "$mediafile"
 tell application "Finder"
@@ -83,11 +85,10 @@ encode_file() {
     fi
     notice "Encoding $infile to $outfile"
     # if HandBrakeCLI success, set $encodedfile to the resulting file
-    HandBrakeCLI -i "$infile" -o "$outfile" -f mp4 --preset="Normal" && encodedfile="$outfile"
+    HandBrakeCLI -i "$infile" -o "$outfile" -f mp4 --preset="Normal" 2>&1 && encodedfile="$outfile"
 }
 
-
-for f; do
+process_file() {
     if needs_encoding "$f" ; then
 	notice "$f was downloaded and needs encoding"
 	encode_file "$f"
@@ -102,4 +103,26 @@ for f; do
     else
 	notice "Nothing to do for file $f" 
     fi
+}
+
+process_directory() {
+    dir="$1"
+    notice "Processing directory \"$dir\""
+    for dirent in "$1"/* ; do
+	process_entry "$dirent"
+    done
+}
+
+process_entry() {
+    if [ -f "$1" ] ; then
+	process_file "$1"
+    elif [ -d "$1" ] ; then
+	process_directory "$1"
+    else
+	log "Don't know what to do with \"$1\""
+    fi
+}
+
+for f; do
+    process_entry "$f"
 done
