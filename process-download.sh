@@ -33,7 +33,7 @@ notice() {
 }
 
 needs_encoding() {
-    filexa=`xattr -p nu.dll.pd.added-to-itunes "$f"`
+    filexa=`xattr -p nu.dll.pd.added-to-itunes "$f" 2> /dev/null`
     expr "$1" : ".*.mkv$" > /dev/null || expr "$1" : ".*.avi$" > /dev/null && [ "$filexa" != "true" ] 
 }
 
@@ -89,6 +89,7 @@ encode_file() {
 }
 
 process_file() {
+    f="$1"
     if needs_encoding "$f" ; then
 	notice "$f was downloaded and needs encoding"
 	encode_file "$f"
@@ -108,7 +109,7 @@ process_file() {
 process_directory() {
     dir="$1"
     notice "Processing directory \"$dir\""
-    for dirent in "$1"/* ; do
+    for dirent in "$dir"/* ; do
 	process_entry "$dirent"
     done
 }
