@@ -24,6 +24,7 @@
 
 growlnotify=/usr/local/bin/growlnotify
 hbcli=/usr/local/bin/HandBrakeCLI
+failfolder=$USER/Downloads/failed_to_add
 export growlnotify hbcli
 
 log() {
@@ -60,6 +61,8 @@ EOF
 	log "$mediafile added to iTunes and deleted"
     else
 	log "Failed to add $mediafile to iTunes"
+	mkdir -p "$failfolder"
+	mv "$mediafile" "$failfolder" && notice "Moved `basename $mediafile` to $failfolder"
 	return $rc
     fi
 }
