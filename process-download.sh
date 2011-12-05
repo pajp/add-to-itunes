@@ -24,6 +24,7 @@
 
 growlnotify=/usr/local/bin/growlnotify
 hbcli=/usr/local/bin/HandBrakeCLI
+export growlnotify hbcli
 
 log() {
     logger -t "process-download.sh/log" "$@"
@@ -127,6 +128,8 @@ process_entry() {
     fi
 }
 
-for f; do
-    process_entry "$f"
-done
+(
+    for f; do
+	process_entry "$f"
+    done
+) &
