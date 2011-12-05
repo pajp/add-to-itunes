@@ -44,7 +44,7 @@ needs_encoding() {
 add_to_itunes_and_delete() {
     mediafile="$1"
     notice "Adding $mediafile to iTunes library"
-    cat <<EOF | osascript
+    cat <<EOF | osascript | logger -t "process-download.sh/osascript/$$" 2>&1
 with timeout of (10*60) seconds
     set p to "$mediafile"
     set a to POSIX file p
