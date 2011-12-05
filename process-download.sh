@@ -27,12 +27,12 @@ hbcli=/usr/local/bin/HandBrakeCLI
 export growlnotify hbcli
 
 log() {
-    logger -t "process-download.sh/log" "$@"
+    logger -t "process-download.sh/log/$$" "$@"
     echo "$@" | $growlnotify -s "process-download"
 }
 
 notice() {
-    logger -t "process-download.sh/notice" "$@"
+    logger -t "process-download.sh/notice/$$" "$@"
     echo "$@" | $growlnotify "process-download"
 }
 
