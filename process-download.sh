@@ -22,14 +22,17 @@
 #   if you're working with Finder at the moment)
 # * check if the file already exists in iTunes library before adding it
 
+growlnotify=/usr/local/bin/growlnotify
+hbcli=/usr/local/bin/HandBrakeCLI
+
 log() {
     logger -t "process-download.sh/log" "$@"
-    echo "$@" | growlnotify -s "process-download"
+    echo "$@" | $growlnotify -s "process-download"
 }
 
 notice() {
     logger -t "process-download.sh/notice" "$@"
-    echo "$@" | growlnotify "process-download"
+    echo "$@" | $growlnotify "process-download"
 }
 
 needs_encoding() {
@@ -85,7 +88,7 @@ encode_file() {
     fi
     notice "Encoding $infile to $outfile"
     # if HandBrakeCLI success, set $encodedfile to the resulting file
-    HandBrakeCLI -i "$infile" -o "$outfile" -f mp4 --preset="Normal" 2>&1 && encodedfile="$outfile"
+    $hbcli -i "$infile" -o "$outfile" -f mp4 --preset="Normal" 2>&1 && encodedfile="$outfile"
 }
 
 process_file() {
