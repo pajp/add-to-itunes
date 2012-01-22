@@ -58,7 +58,8 @@ EOF
     rc=$?
     if [ $rc -eq 0 ] ; then
 	rm "$mediafile"
-	log "$mediafile added to iTunes and deleted"
+	filename=`basename "$mediafile"`
+	log "$filename added to iTunes and deleted"
     else
 	log "Failed to add $mediafile to iTunes"
 	mkdir -p "$failfolder"
