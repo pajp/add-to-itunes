@@ -86,7 +86,7 @@ encode_file() {
     encodedfile=""
     outfile=`echo "$infile" | sed -e 's/\.[0-9a-z]*$/.m4v/'`
     tmpdir=`/usr/bin/mktemp -d -t process-downloads`
-    outfile=${tmpdir}/`basename $outfile`
+    outfile="${tmpdir}/`basename \"$outfile\"`"
     if [ -f "$outfile" ] ; then
 	label_file_encoded "$f"
 	log "Output file $outfile already exists - not re-encoding"
