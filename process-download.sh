@@ -60,6 +60,8 @@ EOF
 	rm "$mediafile"
 	filename=`basename "$mediafile"`
 	log "$filename added to iTunes and deleted"
+	friendlyname=`echo $filename | sed -e 's/\([^.]*\)\.S0*\([0-9][0-9]*\)E0*\([0-9][0-9]*\)*\..*/\1 season \2 episode \3/'|tr '.' ' '`
+	say "A new video was added to iTunes: $friendlyname"
     else
 	log "Failed to add $mediafile to iTunes"
 	mkdir -p "$failfolder"
