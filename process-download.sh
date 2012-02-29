@@ -44,6 +44,22 @@ needs_encoding() {
 
 add_to_itunes_and_delete() {
     mediafile="$1"
+    filename=`basename "$mediafile"`
+    friendlyname=`echo $filename | sed -e 's/\([^.]*\)\.[Ss]0*\([0-9][0-9]*\)[Ee]0*\([0-9][0-9]*\)*\..*/\1 season \2 episode \3/'|tr '.' ' '`
+    season=`echo $friendlyname | sed -e 's/.*season \([0-9][0-9]*\).*/\1/'`
+    if [ "$season" = "$friendlyname" ] ; then # no match
+	season=""
+    fi
+    episode=`echo $friendlyname | sed -e 's/.*episode \([0-9][0-9]*\).*/\1/'`
+    if [ "$episode" = "$friendlyname" ] ; then # no match
+	episode=""
+    fi
+
+    showname=`echo $filename | sed -e 's/[sS][0-9]*[eE][0-9].*//' | tr '._' '  '`
+    if [ -z "$showname" ] ; then
+	showname="$friendlyname"
+    fi
+    echo "showname: $showname, season: $season, episode: $episode"
     notice "Adding $mediafile to iTunes library"
     cat <<EOF | osascript | logger -t "process-download.sh/osascript/$$" 2>&1
 with timeout of (10*60) seconds
@@ -51,16 +67,18 @@ with timeout of (10*60) seconds
     set a to POSIX file p
     tell application "iTunes"
         launch
-        add a
+        set newTrack to (add a)
+        tell newTrack to set video kind to TV show
+        tell newTrack to set show to "$showname"
+        tell newTrack to set season number to "$season"
+        tell newTrack to set episode number to "$episode"
     end tell
 end timeout
 EOF
     rc=$?
     if [ $rc -eq 0 ] ; then
 	rm "$mediafile"
-	filename=`basename "$mediafile"`
-	log "$filename added to iTunes and deleted"
-	friendlyname=`echo $filename | sed -e 's/\([^.]*\)\.S0*\([0-9][0-9]*\)E0*\([0-9][0-9]*\)*\..*/\1 season \2 episode \3/'|tr '.' ' '`
+	log "$friendlyname added to iTunes"
 	say "A new video was added to iTunes: $friendlyname"
     else
 	log "Failed to add $mediafile to iTunes"
