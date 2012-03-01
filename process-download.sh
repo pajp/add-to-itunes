@@ -42,7 +42,7 @@ needs_encoding() {
     expr "$1" : ".*.mkv$" > /dev/null || expr "$1" : ".*.avi$" > /dev/null && [ "$filexa" != "true" ] 
 }
 
-add_to_itunes_and_delete() {
+add_to_itunes() {
     mediafile="$1"
     filename=`basename "$mediafile"`
     friendlyname=`echo $filename | sed -e 's/\([^.]*\)\.[Ss]0*\([0-9][0-9]*\)[Ee]0*\([0-9][0-9]*\)*\..*/\1 season \2 episode \3/'|tr '.' ' '`
@@ -77,7 +77,6 @@ end timeout
 EOF
     rc=$?
     if [ $rc -eq 0 ] ; then
-	rm "$mediafile"
 	log "$friendlyname added to iTunes"
 	say "A new video was added to iTunes: $friendlyname"
     else
@@ -126,13 +125,18 @@ process_file() {
 	if [ "$encodedfile" ] ; then
 	    notice "Encoding successful"
 	    label_file_encoded "$f"
-	    add_to_itunes_and_delete "$encodedfile" && \
+	    add_to_itunes "$encodedfile" && \
 		xattr -w nu.dll.pd.added-to-itunes true "$f"
+	    rm "$encodedfile"
 	else
 	    log "Encoding failed for $f"
 	fi 
     else
-	notice "Nothing to do for file $f" 
+	if echo "$f" | grep -q '\.m4v' ; then
+	    add_to_itunes "$f"
+	else
+	    notice "Nothing to do for file $f"
+	fi
     fi
 }
 
