@@ -153,9 +153,15 @@ process_entry() {
 	log "Don't know what to do with \"$1\""
     fi
 }
-
-(
+if [ "$1" = "--nofork" ] ; then
+    shift
     for f; do
 	process_entry "$f"
     done
-) &
+else
+    (
+	for f; do
+	    process_entry "$f"
+	done
+    ) >> /tmp/process-download-`id -u`.log 2>&1 &
+fi
