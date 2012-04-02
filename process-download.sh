@@ -110,7 +110,7 @@ process_file() {
 	    log "Encoding failed for $f"
 	fi 
     else
-	if echo "$f" | grep -q '\.m4v' ; then
+	if echo "$f" | grep -q '\.\(m4v\|mp4\)$' ; then
 	    add_to_itunes "$f"
 	else
 	    notice "Nothing to do for file $f"
