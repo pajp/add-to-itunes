@@ -1,27 +1,5 @@
 #!/bin/bash
 
-# A script for re-encoding mkv files into something that iTunes and Apple TV
-# likes. Suitable for calling from a Folder Action in order to automatically
-# encode and add new downloaded movies.
-# Requires HandBrakeCLI:
-#  http://handbrake.fr/downloads2.php
-# Requires growlnotify (probably works without it):
-#  http://growl.info/extras.php
-
-# To make this script run automatically when a new file is downloaded,
-# start Automator, select Folder Action, drag a "Run Shell Script" action
-# to the flow. Set the contents of the Shell Script to the path of this
-# file plus "$@" for all arguments, for example:
-#     /Users/rasmus/bin/process-download.sh "$@"
-# Change the "Pass input" dropdown to "as arguments" if it isn't set already.
-# The Folder Action activates when saved.
-
-# todo:
-# * encode into temporary directory to avoid cluttering Downloads folder
-# * do label_file_encoded without revealing the file in Finder (can interfere
-#   if you're working with Finder at the moment)
-# * check if the file already exists in iTunes library before adding it
-
 growlnotify=/usr/local/bin/growlnotify
 hbcli=/usr/local/bin/HandBrakeCLI
 failfolder=$USER/Downloads/failed_to_add
