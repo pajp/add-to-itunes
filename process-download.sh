@@ -7,7 +7,6 @@ export growlnotify hbcli
 
 log() {
     logger -t "process-download.sh/log/$$" "$@"
-    echo "$@" | $growlnotify -s "process-download"
 }
 
 notice() {
@@ -113,7 +112,7 @@ process_file() {
 	if echo "$f" | grep -q '\.\(m4v\|mp4\)$' ; then
 	    add_to_itunes "$f"
 	else
-	    notice "Nothing to do for file $f"
+	    log "Nothing to do for file $f -- ignoring"
 	fi
     fi
 }
