@@ -91,7 +91,7 @@ encode_file() {
     fi
     notice "Encoding $infile to $outfile"
     # if HandBrakeCLI success, set $encodedfile to the resulting file
-    $hbcli -i "$infile" -o "$outfile" -f mp4  > /tmp/handbrake.log.`date +%s`.$$ 2>&1 && encodedfile="$outfile"
+    $hbcli -i "$infile" -o "$outfile" -f mp4 --preset="Normal" > /tmp/handbrake.log.`date +%s`.$$ 2>&1 && encodedfile="$outfile"
 }
 
 process_file() {
