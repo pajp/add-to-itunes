@@ -125,7 +125,11 @@ process_file() {
 
 process_directory() {
     dir="$1"
-    notice "Processing directory \"$dir\""
+    if echo "$dir" | grep -q '\.download$' ; then
+    	log "Skipping directory $dir"
+    	return
+    fi
+    log "Processing directory \"$dir\""
     for dirent in "$dir"/* ; do
 	process_entry "$dirent"
     done
