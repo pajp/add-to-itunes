@@ -3,6 +3,7 @@
 growlnotify=/usr/local/bin/growlnotify
 hbcli=/usr/local/bin/HandBrakeCLI
 failfolder=$USER/Downloads/failed_to_add
+ignoreattrs=false
 export growlnotify hbcli
 
 log() {
@@ -15,6 +16,11 @@ notice() {
 }
 
 needs_encoding() {
+    if $ignoreattrs; then
+	true
+	return
+    fi
+	
     filexa=`xattr -p nu.dll.pd.added-to-itunes "$f" 2> /dev/null`
     expr "$1" : ".*.mkv$" > /dev/null || expr "$1" : ".*.avi$" > /dev/null && [ "$filexa" != "true" ] 
 }
@@ -134,6 +140,10 @@ process_entry() {
 	log "Don't know what to do with \"$1\""
     fi
 }
+if [ "$1" = "--force" ] ; then
+    ignoreattrs=true
+    shift
+fi
 if [ "$1" = "--nofork" ] ; then
     shift
     for f; do
