@@ -60,7 +60,7 @@ end timeout
 EOF
     rc=$?
     if [ $rc -eq 0 ] ; then
-	log "$friendlyname added to iTunes"
+	notice "$friendlyname added to iTunes"
 	say "A new video was added to iTunes: $friendlyname"
     else
 	log "Failed to add $mediafile to iTunes"
