@@ -4,6 +4,9 @@ growlnotify=/usr/local/bin/growlnotify
 hbcli=/usr/local/bin/HandBrakeCLI
 failfolder=$USER/Downloads/failed_to_add
 ignoreattrs=false
+if [ -f ${HOME}/.ati-settings ] ; then
+    . ${HOME}/.ati-settings
+fi
 export growlnotify hbcli
 
 log() {
@@ -56,12 +59,18 @@ with timeout of (10*60) seconds
         tell newTrack to set season number to "$season"
         tell newTrack to set episode number to "$episode"
     end tell
+    if ("${PHONENUMBER}" is not equal to "") then
+        tell application "Messages"
+	    set ts to 1st service whose service type = iMessage
+	    set tb to buddy "${PHONENUMBER}" of ts
+	    send "Added episode $episode of $showname" to tb
+        end tell
+    end if
 end timeout
 EOF
     rc=$?
     if [ $rc -eq 0 ] ; then
 	notice "$friendlyname added to iTunes"
-	say "A new video was added to iTunes: $friendlyname"
     else
 	log "Failed to add $mediafile to iTunes"
 	mkdir -p "$failfolder"
