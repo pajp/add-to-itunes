@@ -10,11 +10,13 @@ fi
 export growlnotify hbcli
 
 log() {
-    logger -t "process-download.sh/log/$$" "$@"
+    logger -t "process-download.sh($USER)/log/$$" "$@"
 }
 
+log "starting."
+
 notice() {
-    logger -t "process-download.sh/notice/$$" "$@"
+    logger -t "process-download.sh($USER)/notice/$$" "$@"
     echo "$@" | $growlnotify "process-download"
 }
 
