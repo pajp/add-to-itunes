@@ -127,7 +127,8 @@ process_file() {
 	fi 
     else
 	if echo "$f" | grep -q '\.\(m4v\|mp4\)$' ; then
-	    add_to_itunes "$f"
+	    add_to_itunes "$f" && \
+		xattr -w nu.dll.pd.added-to-itunes true "$f"
 	else
 	    log "Nothing to do for file $f -- ignoring"
 	fi
